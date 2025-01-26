@@ -1,6 +1,5 @@
 "use client";
 import React, { useState } from "react";
-import ReactDOM from "react-dom";
 import Scoreboard from "./components/Scoreboard";
 import './globals.css'
 import MainLetter from "./components/MainLetter";
@@ -32,6 +31,10 @@ export default function Page() {
   const [fourLetters, setFourLetters] = useState([]);
   const [message, setMessage] = useState("");
   const [score, setScore] = useState(0);
+  const [highScore, setHighScore] = useState(0);
+  const [gameActive, setGameActive] = useState(false)
+
+
 
   //generate the new letter
    function onGenerateNewLetter() {
@@ -46,30 +49,41 @@ export default function Page() {
   //This line below runs before the code above is executed, so that's why I used randomLetter here
    const options = generateFourLetters(randomLetter);
    setFourLetters(options);
+   setGameActive(true);
+ 
    }
 
     function checkButton (event){
-    console.log("letter was clicked");
-    console.log(event);
-    const letter = (event.target.innerHTML);
-    console.log(letter);
-    
+      if (!gameActive) return; // Prevent interaction if the game is inactive
+
+    const letter = (event.target.innerHTML);   
     if (letter === currentLetter){
       setMessage("Correct! 🎉")
       setScore(prevScore => (prevScore + 1));
+      setGameActive(false); // Disable further clicks until new letters are generated
          // Use setTimeout to call onGenerateNewLetter after 1 second
-    setTimeout(onGenerateNewLetter, 2000);
+    setTimeout(onGenerateNewLetter, 1500);
 //add to the score here?
 //Render new letters after 1 second
     } else {
-      setMessage("Try Again!👎🏼")
-    }
+      setMessage("Try Again!👎🏼")    
+ //FIX THIS CODE//
+ setHighScore((prevHighScore) => Math.max(prevHighScore, score)); // Update high score
+
+        // setHighScore(score);
+        
+      
+      // setHighScore(score);
+      setScore(0)
+    };
   }
 
   return (
-    <div className="relative h-screen bg-gradient-to-b from-blue-200 to-white">
-      <div className="md:container md:mx-auto">
-        <Scoreboard score={score}/>
+    // <div className="relative h-screen bg-gradient-to-b from-blue-200 to-white">
+      <div className="relative min-h-screen bg-gradient-to-b from-blue-200 to-white flex flex-col items-center">
+      {/* <div className="md:container md:mx-auto"> */}
+      <div className="w-full max-w-lg p-4">
+        <Scoreboard score={score} highScore={highScore}/>
         <MainLetter letter={currentLetter} />
         <Options correct={currentLetter} four={fourLetters} onClick={checkButton}/>
         <NewLetterButton onClick={onGenerateNewLetter} />
@@ -77,4 +91,4 @@ export default function Page() {
       </div>
     </div>
   )
-}
+};
