@@ -8,7 +8,8 @@ export default {
   theme: {
     extend: {
       colors: {
-        midnight: '#2c3e50', tahiti: '#1abc9c',
+        midnight: "#2c3e50",
+        tahiti: "#1abc9c",
       },
     },
   },

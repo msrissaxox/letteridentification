@@ -12,19 +12,18 @@ const compat = new FlatCompat({
 const eslintConfig = [
   ...compat.extends("next/core-web-vitals"),
   {
-    files: ['**/*.js', '**/*.jsx'],
+    files: ["**/*.js", "**/*.jsx"],
     languageOptions: {
       ecmaVersion: 2020,
-      sourceType: 'module',
+      sourceType: "module",
       globals: {
-        window: 'readonly',
-        document: 'readonly',
+        window: "readonly",
+        document: "readonly",
       },
-    
     },
     settings: {
       react: {
-        version: 'detect',
+        version: "detect",
       },
     },
     rules: {
